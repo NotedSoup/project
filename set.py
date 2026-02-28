@@ -4,33 +4,7 @@ from os.path import split
 import requests
 from bs4 import BeautifulSoup
 
-url = ('https://pitergsm.ru/catalog/phones/iphone/iphone-se-2022/14459/'
-       )
 
-response = requests.get(url)
-text = response.text
-soup = BeautifulSoup(text)
-set = soup.prettify()[soup.prettify().index('<div class="tabs__tab js_tabs_tab" id="tab-specs">'):soup.prettify().index('<div class="tabs__tab js_tabs_tab" id="tab-delivery">')]
-set_text = set.split(' ')
-new_text = [item for item in set_text if item != '']
-# print(new_text)
-diagonal, screen,matrix,resolution,plotnost ,mod= '','','','','',''
-if 'дюйм\n' in new_text and 'Тип' in new_text :
-    diagonal = new_text[new_text.index( 'дюйм\n')+6:new_text.index('Тип')-7]
-if 'Тип' in new_text and 'Разрешение' in new_text :
-    screen = new_text[new_text.index( 'Тип')+5:new_text.index('Разрешение')-6]
-if 'Разрешение' in new_text and 'Плотность' in new_text :
-    resolution = new_text[new_text.index( 'Разрешение')+7:new_text.index('Плотность')-7]
-if 'Матрица\n' in new_text and 'Плотность' in new_text :
-    plotnost = new_text[new_text.index( 'Плотность')+6:new_text.index('Матрица\n')-6]
-if 'Матрица\n' in new_text and 'Беспроводная' in new_text :
-    matrix = new_text[new_text.index( 'Матрица\n')+6:new_text.index('Беспроводная')-9]
-if 'связи\n' in new_text and 'Стандарт' in new_text:
-    mod = new_text[new_text.index('связи\n')+6 :new_text.index('Стандарт')-7 ]
-##if ''
-##if 'связи\n' in new_text and 'Стандарт' in new_text:
-##    mod = new_text[new_text.index('Стандарт')+6 :new_text.index('Стандарт')-7 ]
-##print(diagonal, screen, resolution, plotnost, matrix, mod)
 
 
 def parse_simple(url):
@@ -57,7 +31,7 @@ def parse_simple(url):
 ##if ''
 ##if 'связи\n' in new_text and 'Стандарт' in new_text:
 ##    mod = new_text[new_text.index('Стандарт')+6 :new_text.index('Стандарт')-7 ]
-    print(diagonal, screen, resolution, plotnost, matrix, mod)
+    return diagonal, screen, resolution, plotnost, matrix, mod
 
 
 
@@ -181,8 +155,12 @@ iphones_url = {"17 pro max": "https://pitergsm.ru/catalog/phones/iphone/iphone-1
                 "11": "https://pitergsm.ru/catalog/phones/iphone/iphone-12/10538/",
                 "SE": "https://pitergsm.ru/catalog/phones/iphone/iphone-se-2022/14456/"
                 }
+print(iphones_url['17 pro'])
 iphones_tech = {}
 for dict in iphones_url:
+    print(dict,parse_simple(iphones_url[dict]))
     tech = parse_simple(iphones_url[dict])
     iphones_tech.update(dict, tech)
-print(iphones_tech)
+for dict in iphones_tech:
+    print(dict,iphones_tech[dict])
+##print(iphones_tech)
