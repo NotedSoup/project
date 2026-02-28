@@ -15,9 +15,9 @@ def parse_simple(url):
     set = soup.prettify()[soup.prettify().index('<div class="tabs__tab js_tabs_tab" id="tab-specs">'):soup.prettify().index('<div class="tabs__tab js_tabs_tab" id="tab-delivery">')]
     set_text = set.split(' ')
     new_text = [item for item in set_text if item != '']
+    new_text =[item for item in new_text if not re.search(r'[a-zA-Z]', item)]
     return new_text
 
-trs = ['div','class','id','js','tab']
 print(parse_simple(url))
 
 
@@ -25,6 +25,6 @@ print(parse_simple(url))
 def par(new_text):
     new_text =[item for item in new_text if not re.search(r'[a-zA-Z]', item)]
 
-
+    new_text = new_text[0, new_text.index('Размеры')]
     return new_text
 print(par(parse_simple(url)))
